@@ -33,6 +33,7 @@ int initialize(headNode** h);
          - 이중포인터를 매개변수로 받아도 해제할 수 있을 것 */
 int freeList(headNode* h);
 
+
 int insertNode(headNode* h, int key);
 int insertLast(headNode* h, int key);
 int insertFirst(headNode* h, int key);
@@ -184,7 +185,7 @@ int insertLast(headNode* h, int key) {	//노드에 값을 입력하고 가장 �
 		return 0;
 	}
 
-	listNode* n = h->first;	//리스트 노드 n을 선언하고 헤드 노드의 포인터로 초기화
+	listNode* n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화
 	while(n->rlink != NULL) {	//n의 오른쪽 노드가 NULL이 아닌 동안
 		n = n->rlink;	//n에 오른쪽 노드를 대입
 	}
@@ -206,8 +207,8 @@ int deleteLast(headNode* h) {	//마지막 노드를 삭제하는 함수
 		return 0;
 	}
 
-	listNode* n = h->first;	//리스트 노드 n을 선언하고 헤드 노드의 포인터로 초기화
-	listNode* trail = NULL;	//리스트 노드 trail을 선언하고 NULL로 초기화
+	listNode* n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화
+	listNode* trail = NULL;	//리스트 노드 포인터 trail을 선언하고 NULL로 초기화
 
 	/* 노드가 하나만 있는 경우, 즉 first node == last node인  경우 처리 */
 	if(n->rlink == NULL) {	//n의 오른쪽을 가리키는 포인터가 NULL이면
@@ -242,16 +243,16 @@ int insertFirst(headNode* h, int key) {	//노드에 값을 입력하고 가장 �
 
 	if(h->first == NULL)	//헤드 노드의 포인터가 NULL이면
 	{
-		h->first = node;
+		h->first = node;	//헤드 노드의 포인터에 node 대입
 		return 1;
 	}
 
-	node->rlink = h->first;
-	node->llink = NULL;
+	node->rlink = h->first;	//node의 오른쪽을 가리키는 포인터에 헤드 노드의 포인터를 대입
+	node->llink = NULL;	//node의 왼쪽을 가리키는 포인터에 NULL 대입
 
-	listNode *p = h->first;
-	p->llink = node;
-	h->first = node;
+	listNode *p = h->first;	//리스트 노드 포인터 p를 선언하고 헤드 노드의 포인터로 초기화
+	p->llink = node;	//p의 왼쪽을 가리키는 포인터에 node를 대입
+	h->first = node;	//헤드 노드의 포인터에 node 대입
 
 	return 0;
 }
@@ -259,17 +260,17 @@ int insertFirst(headNode* h, int key) {	//노드에 값을 입력하고 가장 �
 /**
  * list의 첫번째 노드 삭제
  */
-int deleteFirst(headNode* h) {
+int deleteFirst(headNode* h) {	//첫번째 노드를 삭제하는 함수
 
-	if (h->first == NULL)
+	if (h->first == NULL)	//헤드 노드의 포인터가 NULL이면
 	{
 		printf("nothing to delete.\n");
 		return 0;
 	}
-	listNode* n = h->first;
-	h->first = n->rlink;
+	listNode* n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화
+	h->first = n->rlink;	//헤드 노드의 포인터에 n의 오른쪽을 가리키는 포인터를 대입
 
-	free(n);
+	free(n);	// n 메모리 해제 
 
 	return 0;
 }
@@ -279,26 +280,26 @@ int deleteFirst(headNode* h) {
 /**
  * 리스트의 링크를 역순으로 재 배치
  */
-int invertList(headNode* h) {
+int invertList(headNode* h) {	//노드의 순서를 역순으로 재배치하는 함수
 
 
-	if(h->first == NULL) {
+	if(h->first == NULL) {	//헤드 노드의 포인터가 NULL이면
 		printf("nothing to invert...\n");
 		return 0;
 	}
-	listNode *n = h->first;
-	listNode *trail = NULL;
-	listNode *middle = NULL;
+	listNode *n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화
+	listNode *trail = NULL;	//리스트 노드 포인터 trail을 선언하고 NULL로 초기화
+	listNode *middle = NULL;	//리스트 노드 포인터 middle을 선언하고 NULL로 초기화
 
-	while(n != NULL){
-		trail = middle;
-		middle = n;
-		n = n->rlink;
-		middle->rlink = trail;
-		middle->llink = n;
+	while(n != NULL){	//n이 NULL이 아닌 동안
+		trail = middle;	//trail에 middle 대입
+		middle = n;	//middle에 n 대입
+		n = n->rlink;	//n에 n의 오른쪽을 가리키는 포인터 대입
+		middle->rlink = trail; //middle의 오른쪽을 가리키는 포인터에 trail 대입
+		middle->llink = n;	//middle의 왼쪽을 가리키는 포인터에 n 대입
 	}
 
-	h->first = middle;
+	h->first = middle;	//헤드 노드의 포인터에 middle 대입
 
 	return 0;
 }
@@ -306,39 +307,39 @@ int invertList(headNode* h) {
 
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
-int insertNode(headNode* h, int key) {
+int insertNode(headNode* h, int key) {	//노드에 값을 대입하는 함수
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
-	node->llink = node->rlink = NULL;
+	listNode* node = (listNode*)malloc(sizeof(listNode));	//리스트 노드 node를 선언하고 동적 할당
+	node->key = key;	//node의 key 값에 입력 받은 key 대입
+	node->llink = node->rlink = NULL;	//node의 양쪽 포인터를 NULL로 초기화
 
-	if (h->first == NULL)
+	if (h->first == NULL)	//헤드 노드의 포인터가 NULL이면
 	{
-		h->first = node;
+		h->first = node;	//헤드 노드의 포인터에 node 대입
 		return 0;
 	}
 
-	listNode* n = h->first;
+	listNode* n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화 
 
 	/* key를 기준으로 삽입할 위치를 찾는다 */
-	while(n != NULL) {
-		if(n->key >= key) {
+	while(n != NULL) {	//n이 NULL이 아닌 동안
+		if(n->key >= key) {	//리스트 노드 n의 key 값이 입력 받은 key 값보다 크거나 같으면
 			/* 첫 노드 앞쪽에 삽입해야할 경우 인지 검사 */
-			if(n == h->first) {
-				insertFirst(h, key);
+			if(n == h->first) {	//리스트 노드 n이 헤드 노드의 포인터와 같다면
+				insertFirst(h, key);	//가장 처음 순서로 삽입하는 함수 호출
 			} else { /* 중간이거나 마지막인 경우 */
-				node->rlink = n;
-				node->llink = n->llink;
-				n->llink->rlink = node;
+				node->rlink = n;	//node의 오른쪽을 가리키는 포인터에 n을 대입
+				node->llink = n->llink;	//node의 왼쪽을 가리키는 포인터에 n의 왼쪽을 가리키는 포인터를 대입
+				n->llink->rlink = node;	//n의 왼쪽 노드의 오른쪽을 가리키는 포인터에 node 대입
 			}
 			return 0;
 		}
 
-		n = n->rlink;
+		n = n->rlink;	//n에 n의 오른쪽 노드를 대입
 	}
 
 	/* 마지막 노드까지 찾지 못한 경우, 마지막에 삽입 */
-	insertLast(h, key);
+	insertLast(h, key);	//가장 마지막 순서로 삽입하는 함수 호출
 	return 0;
 }
 
@@ -346,34 +347,34 @@ int insertNode(headNode* h, int key) {
 /**
  * list에서 key에 대한 노드 삭제
  */
-int deleteNode(headNode* h, int key) {
+int deleteNode(headNode* h, int key) {	//해당하는 key 값인 노드 제거하는 함수
 
-	if (h->first == NULL)
+	if (h->first == NULL)	//헤드 노드의 포인터가 NULL인 경우
 	{
 		printf("nothing to delete.\n");
 		return 1;
 	}
 
-	listNode* n = h->first;
+	listNode* n = h->first;	//리스트 노드 포인터 n을 선언하고 헤드 노드의 포인터로 초기화
 
-	while(n != NULL) {
-		if(n->key == key) {
+	while(n != NULL) {	//n이 NULL 값이 아닌 동안
+		if(n->key == key) {	//n의 key 값과 입력 받은 key 값이 같다면
 			if(n == h->first) { /* 첫 노드째 노드 인경우 */
-				deleteFirst(h);
+				deleteFirst(h);	//첫번째 노드를 삭제하는 함수 호출
 			} else if (n->rlink == NULL){ /* 마지막 노드인 경우 */
-				deleteLast(h);
+				deleteLast(h);	//마지막 노드를 삭제하는 함수 호출
 			} else { /* 중간인 경우 */
-				n->llink->rlink = n->rlink;
-				n->rlink->llink = n->llink;
-				free(n);
+				n->llink->rlink = n->rlink;	//n의 왼쪽 노드의 오른쪽을 가리키는 포인터에 n의 오른쪽을 가리키는 포인터를 대입
+				n->rlink->llink = n->llink;	//n의 오른쪽 노드의 왼쪽을 가리키는 포인터에 n의 왼쪽을 가리키는 포인터를 대입
+				free(n);	//n 메모리 해제
 			}
 			return 1;
 		}
 
-		n = n->rlink;
+		n = n->rlink;	//n에 n의 오른쪽 노드 대입
 	}
 
 	/* 찾지 못 한경우 */
-	printf("cannot find the node for key = %d\n", key);
+	printf("cannot find the node for key  =  %d\n", key);
 	return 1;
 }
