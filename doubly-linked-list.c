@@ -47,6 +47,9 @@ void printList(headNode* h);
 
 int main()
 {
+	printf("[----- [Jeong Hanul] [2020039076] -----]\n\n");
+
+	
 	char command;	//명령어를 입력 받을 변수
 	int key;	//값을 입력 받을 변수
 	headNode* headnode=NULL;	//헤드 노드를 선언하고 NULL 값으로 초기화
